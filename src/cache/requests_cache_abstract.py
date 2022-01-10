@@ -1,11 +1,12 @@
 from abc import ABC, abstractclassmethod
-from fastapi import Response
+
+from model.response import ResponseModel
 
 
 class CacheInterface(ABC):
     @abstractclassmethod
-    async def get(cls, url: str) -> Response: pass
+    async def get(cls, url: str) -> ResponseModel: pass
 
     @abstractclassmethod
-    async def set(cls, url: str, value: Response, ttl=0): pass
+    async def set(cls, url: str, value: ResponseModel, ttl=0): pass
 

@@ -1,15 +1,16 @@
 import aioredis 
 import json
-import os
+import logging
 
+from settings import Settings
 from model.response import ResponseModel
 from cache.requests_cache_abstract import CacheInterface
 
 
 class Cache(CacheInterface):
     _cache = aioredis.Redis(
-        host=os.getenv("RACP-redis-host", "127.0.0.1"),
-        port=os.getenv("RACP-redis-host", 6379),
+        host=Settings().redis_host,
+        port=Settings().redis_port,
         db=0)
 
     @classmethod
@@ -21,5 +22,9 @@ class Cache(CacheInterface):
     async def set(cls, url: str, data: ResponseModel, ttl=0):
         data.headers['Cache-Control-Source'] = 'cached'
         await cls._cache.setex(url, ttl, json.dumps(data.dict()))
+        logging.getLogger('uvicorn.default').info(f'response for {url} cached for {ttl} sec')
 
+    @classmethod
+    async def purge(cls, url: str) -> ResponseModel:
+        data = await cls._cache.delete(url)
 

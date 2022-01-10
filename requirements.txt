@@ -3,4 +3,5 @@ aiohttp
 aioredis
 pydantic
 pydantic[email]
+pydantic[dotenv]
 uvicorn
