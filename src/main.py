@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description='REST api cache proxy')
 parser.add_argument('--host', type=str, help='REST api cache proxy host')
 args = parser.parse_args()
 
-mapping['source'] = args.host
+mapping['source'] = Settings().receive_from
 mapping['destination'] = Settings().redirect_to
 
 v1 = fastapi.APIRouter()

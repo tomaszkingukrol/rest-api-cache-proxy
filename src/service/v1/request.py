@@ -31,6 +31,7 @@ async def _get_response(request: Request) -> Response:
 async def ask_for_response(request: Request) -> Response:
     try:
         url = str(request.url).replace(mapping['source'], mapping['destination'])
+        print(url)
         conn = aiohttp.TCPConnector(ssl=False)
         headers = request.headers
         async with aiohttp.ClientSession(connector=conn, headers=headers) as session:

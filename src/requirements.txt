@@ -1,7 +1,9 @@
 fastapi
 aiohttp
+redis
 aioredis
 pydantic
 pydantic[email]
 pydantic[dotenv]
 uvicorn
+tabulate

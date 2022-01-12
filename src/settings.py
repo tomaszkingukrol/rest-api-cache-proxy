@@ -3,6 +3,7 @@ from pydantic import BaseSettings, BaseConfig
 
 class Settings(BaseSettings):
     servig_port: int
+    receive_from: str
     redirect_to: str
     redis_host: str
     redis_port: int

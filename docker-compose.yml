@@ -1,0 +1,56 @@
+version: "3"
+services:
+
+  redis:
+    image: 'redis'
+    networks:
+      vpc:
+        ipv4_address: 10.3.0.10
+
+  rest-proxy-1:
+    depends_on:
+      - redis
+    build: 
+      context: ./src
+    ports:
+      - "5001:5000"
+    networks:
+      vpc:
+        ipv4_address: 10.3.0.20
+
+  rest-proxy-2:
+    depends_on:
+      - redis
+    build: 
+      context: ./src
+    ports:
+      - "5002:5000"
+    networks:
+      vpc:
+        ipv4_address: 10.3.0.21
+
+  load-balancer:
+    depends_on:
+      - rest-proxy-1
+      - rest-proxy-2
+    build:
+      context: ./test/nginx
+    ports:
+      - "8080:80"
+    networks:
+      vpc:
+        ipv4_address: 10.3.0.50
+
+  cached-api:
+    build: 
+      context: ./test/cached_service
+    networks:
+      vpc:
+        ipv4_address: 10.3.0.30
+
+networks:
+  vpc:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.3.0.0/16

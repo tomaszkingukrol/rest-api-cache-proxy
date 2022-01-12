@@ -13,7 +13,7 @@ class CurrentRequests(CurrentRequestsInterface):
 
     @classmethod
     def lock(cls, url: str) -> bool:
-        res =  cls._cache.set(url, 1, nx=True)
+        res = cls._cache.set(url, 1, nx=True)
         return res
 
     @classmethod
