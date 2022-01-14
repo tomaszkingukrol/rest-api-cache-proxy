@@ -1,13 +1,13 @@
-from pydantic import BaseSettings, BaseConfig
+from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):
-    servig_port: int
-    receive_from: str
-    redirect_to: str
-    redis_host: str
-    redis_port: int
+    servig_port: int = Field(..., env='SERVING_PORT')
+    receive_from: str = Field(..., env='RECEIVE_FROM')
+    redirect_to: str = Field(..., env='REDIRECT_TO')
+    redis_host: str = Field(..., env='REDIS_HOST')
+    redis_port: int = Field(..., env='REDIS_PORT')
 
     class Config:
-        env_file = 'racp.env'
-        env_file_encoding = 'utf-8'
+        env_prefix = ''
+        case_sensitive = False
