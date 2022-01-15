@@ -1,16 +1,16 @@
 version: "3"
 services:
 
-  api:
+  microservice:
     build: 
       context: ./microservices
 
-  redis:
+  redis-cache:
     image: 'redis'
 
-  cache-proxy:
+  caching-proxy:
     depends_on:
-      - redis
+      - redis-cache
     build: 
       context: ../src
     ports:
@@ -19,12 +19,12 @@ services:
       - SERVING_HOST=0.0.0.0
       - SERVING_PORT=5000
       - TARGET_LOCATION=api:5000
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis-cache
       - REDIS_PORT=6379
 
   request-router:
     depends_on:
-      - cache-proxy
+      - caching-proxy
     build:
       context: ./nginx
     ports:

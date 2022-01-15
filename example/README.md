@@ -1,9 +1,9 @@
 # exaple of rest-api-cache-proxy configuration
-Please see configuration [here](docker-compose.yml)
+![Screenshot](draw.png)
 
-- api: simple micro service with GET and POSt REST api 
-- redis: implementation of cache
-- cache-proxy: caching proxy
-- request-router: nginx
+- Request Router (nginx): route GET requests to the Caching Proxy and others requests directly to Microservice
+- Caching Proxy: cache responses for number of second specified in 'Cache-Control-TTL' tag 
+- Cache (redis): allow scalability of Caching Proxy (you can setup more that one instance)
+- Microservice: simple service with GET and POSt REST API
 
-To run test run: docker-compose up
+See configuration [here](docker-compose.yml)
