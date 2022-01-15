@@ -3,15 +3,14 @@ import aiohttp
 from urllib.parse import urlparse
 from fastapi import Request, Response
 
+from settings import Settings
 from model.response import ResponseModel
 from cache.requests_cache_redis import Cache
 from cache.current_requests_redis import CurrentRequests
 
 
-mapping = {'source': None, 'destination': None}
-
-def url_map(url: str) -> str:
-    return urlparse(url)._replace(netloc=mapping['destination']).geturl()
+def url_map(url: str, target_loc: str = Settings().target_location) -> str:
+    return urlparse(url)._replace(netloc=target_loc).geturl()
 
 
 async def get_response(request: Request) -> Response:

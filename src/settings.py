@@ -2,9 +2,9 @@ from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):
+    servig_host: str = Field(..., env='SERVING_HOST')
     servig_port: int = Field(..., env='SERVING_PORT')
-    receive_from: str = Field(..., env='RECEIVE_FROM')
-    redirect_to: str = Field(..., env='REDIRECT_TO')
+    target_location: str = Field(..., env='TARGET_LOCATION')
     redis_host: str = Field(..., env='REDIS_HOST')
     redis_port: int = Field(..., env='REDIS_PORT')
 

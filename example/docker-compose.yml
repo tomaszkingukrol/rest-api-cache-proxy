@@ -16,9 +16,9 @@ services:
     ports:
       - "5000:5000"
     environment:
+      - SERVING_HOST=0.0.0.0
       - SERVING_PORT=5000
-      - RECEIVE_FROM=cache
-      - REDIRECT_TO=api:5000
+      - TARGET_LOCATION=api:5000
       - REDIS_HOST=redis
       - REDIS_PORT=6379
 
