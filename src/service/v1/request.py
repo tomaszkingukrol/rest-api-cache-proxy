@@ -1,5 +1,6 @@
 import asyncio
 import aiohttp
+from urllib.parse import urlparse
 from fastapi import Request, Response
 
 from model.response import ResponseModel
@@ -9,6 +10,9 @@ from cache.current_requests_redis import CurrentRequests
 
 mapping = {'source': None, 'destination': None}
 
+def url_map(url: str) -> str:
+    return urlparse(url)._replace(netloc=mapping['destination']).geturl()
+
 
 async def get_response(request: Request) -> Response:
     response = await _get_response(request)
@@ -16,7 +20,7 @@ async def get_response(request: Request) -> Response:
 
 
 async def _get_response(request: Request) -> Response:
-    url = str(request.url).replace(mapping['source'], mapping['destination'])
+    url = url_map(str(request.url))
     response = await Cache.get(url)
     if not response: 
         if CurrentRequests.lock(url):
@@ -30,8 +34,7 @@ async def _get_response(request: Request) -> Response:
 
 async def ask_for_response(request: Request) -> Response:
     try:
-        url = str(request.url).replace(mapping['source'], mapping['destination'])
-        print(url)
+        url = url_map(str(request.url))
         conn = aiohttp.TCPConnector(ssl=False)
         headers = request.headers
         async with aiohttp.ClientSession(connector=conn, headers=headers) as session:

@@ -3,7 +3,7 @@ services:
 
   api:
     build: 
-      context: ./test/cached_service
+      context: ./microservices
 
   redis:
     image: 'redis'
@@ -12,7 +12,7 @@ services:
     depends_on:
       - redis
     build: 
-      context: ./src
+      context: ../src
     ports:
       - "5000:5000"
     environment:
@@ -26,7 +26,7 @@ services:
     depends_on:
       - cache-proxy
     build:
-      context: ./test/nginx
+      context: ./nginx
     ports:
       - "8080:80"
 
