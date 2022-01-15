@@ -5,7 +5,7 @@ import timeit
 import string
 import random
 
-sample = 1_000_000
+sample = 100_000
 errors = dict()
 measure = list()
 result = list()
@@ -37,16 +37,12 @@ async def test(session, host):
 async def main():
     tasks = list()
     conn = aiohttp.TCPConnector(ssl=False)
-    headers = {'content-type': 'application/json', 'X-API-Key': '03e64fe9-21bd-42b4-b5ba-b3ebe4453bbe'}
+    headers = {'content-type': 'application/json'}
     async with aiohttp.ClientSession(connector=conn, headers=headers) as session:
-        for i in range(int(sample/2)):
-            await asyncio.sleep(0.001)
+        for i in range(int(sample)):
+            await asyncio.sleep(0.0001)
             task = asyncio.create_task(test(session, '127.0.0.1'))
             tasks.append(task)
-            await asyncio.sleep(0.001)
-            task = asyncio.create_task(test(session, '127.0.0.2'))
-            tasks.append(task)
-
         for i in tasks:
             await i
 

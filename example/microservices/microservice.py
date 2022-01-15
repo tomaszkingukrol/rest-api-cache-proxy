@@ -7,6 +7,17 @@ api = Api(app)
 class About(Resource):
     def get(self, path):
         response_body = {
+            'type': 'GET',
+            'name': path,
+            'query': request.args
+        }
+        response_code = 200
+        response_tag = {'Cache-Control-TTL': 15}
+        return response_body, response_code, response_tag
+
+    def post(self, path):
+        response_body = {
+            'type': 'POST',
             'name': path,
             'query': request.args
         }

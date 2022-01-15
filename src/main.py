@@ -1,19 +1,9 @@
 import fastapi
 import uvicorn
-import argparse
 import logging
 
 from settings import Settings
 from api.v1 import request, healthcheck
-from service.v1.request import mapping
-
-
-parser = argparse.ArgumentParser(description='REST api cache proxy')
-parser.add_argument('--host', type=str, help='REST api cache proxy host')
-args = parser.parse_args()
-
-mapping['source'] = Settings().receive_from
-mapping['destination'] = Settings().redirect_to
 
 v1 = fastapi.APIRouter()
 v1.include_router(healthcheck.v1)
@@ -37,6 +27,6 @@ if __name__ == "__main__":
     log_config = uvicorn.config.LOGGING_CONFIG
     log_config["formatters"]["access"]["fmt"] = "%(asctime)s %(levelname)s %(message)s"
     log_config["formatters"]["default"]["fmt"] = "%(asctime)s %(levelname)s %(message)s"    
-    uvicorn.run("main:api", host=args.host, port=Settings().servig_port, log_config=log_config, reload=True)
+    uvicorn.run("main:api", host=Settings().servig_host, port=Settings().servig_port, log_config=log_config, reload=True)
 
 
