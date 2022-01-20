@@ -5,7 +5,7 @@ import timeit
 import string
 import random
 
-sample = 100_000
+sample = 10_000
 errors = dict()
 measure = list()
 result = list()
@@ -16,7 +16,7 @@ def id_generator(size=2, chars=string.ascii_lowercase + string.digits):
 
 
 async def test(session, host):
-    host, port, request = host, 5000, f'xx-{id_generator()}'
+    host, port, request = host, 80, f'cached/xx-{id_generator()}'
     url = f'http://{host}:{port}/{request}'
     try:
         resp = await session.get(url)
@@ -41,7 +41,7 @@ async def main():
     async with aiohttp.ClientSession(connector=conn, headers=headers) as session:
         for i in range(int(sample)):
             await asyncio.sleep(0.0001)
-            task = asyncio.create_task(test(session, '127.0.0.1'))
+            task = asyncio.create_task(test(session, '192.168.49.2'))
             tasks.append(task)
         for i in tasks:
             await i
