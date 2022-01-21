@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-proxy-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: cacheproxy
+  template:
+    metadata:
+      labels:
+        component: cacheproxy
+    spec:
+      containers:
+        - name: cache-proxy
+          image: racp.example.cacheproxy
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SERVING_HOST
+              value: '0.0.0.0'
+            - name: SERVING_PORT
+              value: '5000'
+            - name: TARGET_LOCATION
+              value: microservice-cluster-ip-service:5000
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: '6379'
+
